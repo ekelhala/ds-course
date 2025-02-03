@@ -13,3 +13,8 @@ cu_cp:
               - sst: 1
   f1ap:
     bind_addr: 192.168.122.124
+
+expert_execution:
+  threads:
+    non_rt:
+      nof_non_rt_threads: 2
