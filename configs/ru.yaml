@@ -1,19 +1,29 @@
+#ru_emu:
+#    cells:
+#    - bandwidth: 10                          # Bandwidth of the cell
+#      network_interface: enp1s0               # Use BDF instead of interface name for DPDK
+#      ru_mac_addr: 52:54:00:ca:b9:b4          # MAC address of the RU
+#      du_mac_addr: 52:54:00:f4:90:71          # MAC address of the DU
+#      enable_promiscuous: false               # Promiscuous mode flag
+#      vlan_tag: 33                            # VLAN tag
+#      dl_port_id: [0, 1, 2, 3]                # Port IDs for downlink
+#      ul_port_id: [0, 1, 2, 3]                # Port IDs for uplink
+#      prach_port_id: [4, 5]                   # Port IDs for PRACH
+#      compr_method_ul: "bfp"                  # Compression method for uplink
+#      compr_bitwidth_ul: 9                    # Compression bitwidth for uplink
+#      t2a_max_cp_dl: 470                      # T2a maximum value for downlink Control-Plane
+#      t2a_min_cp_dl: 350                      # T2a minimum value for downlink Control-Plane
+#      t2a_max_cp_ul: 200                      # T2a maximum value for uplink Control-Plane
+#      t2a_min_cp_ul: 90                       # T2a minimum value for uplink Control-Plane
+#      t2a_max_up: 345                         # T2a maximum value for User-Plane
+#      t2a_min_up: 70                          # T2a minimum value for User-Plane
 ru_emu:
-    cells:
-    - bandwidth: 10                          # Bandwidth of the cell
-      network_interface: enp1s0               # Use BDF instead of interface name for DPDK
-      ru_mac_addr: 52:54:00:ca:b9:b4          # MAC address of the RU
-      du_mac_addr: 52:54:00:f4:90:71          # MAC address of the DU
-      enable_promiscuous: false               # Promiscuous mode flag
-      vlan_tag: 33                            # VLAN tag
-      dl_port_id: [0, 1, 2, 3]                # Port IDs for downlink
-      ul_port_id: [0, 1, 2, 3]                # Port IDs for uplink
-      prach_port_id: [4, 5]                   # Port IDs for PRACH
-      compr_method_ul: "bfp"                  # Compression method for uplink
-      compr_bitwidth_ul: 9                    # Compression bitwidth for uplink
-      t2a_max_cp_dl: 470                      # T2a maximum value for downlink Control-Plane
-      t2a_min_cp_dl: 350                      # T2a minimum value for downlink Control-Plane
-      t2a_max_cp_ul: 200                      # T2a maximum value for uplink Control-Plane
-      t2a_min_cp_ul: 90                       # T2a minimum value for uplink Control-Plane
-      t2a_max_up: 345                         # T2a maximum value for User-Plane
-      t2a_min_up: 70                          # T2a minimum value for User-Plane
+  cells:
+  - bandwidth: 100
+    network_interface: enp1s0
+    ru_mac_addr: 52:54:00:ca:b9:b4
+    du_mac_addr: 52:54:00:f4:90:71
+    vlan_tag: 2
+    ul_port_id: [0]
+    compr_method_ul: "bfp"
+    compr_bitwidth_ul: 9
