@@ -1,9 +1,9 @@
 f1ap:
-  cu_cp_addr: 192.168.122.124
-  bind_addr: 192.168.122.124
+  cu_cp_addr: 192.168.122.123
+  bind_addr: 192.168.122.123
 
 nru:
-  bind_addr: 192.168.122.124
+  bind_addr: 192.168.122.123
 
 ru_ofh:
   t1a_max_cp_dl: 470
