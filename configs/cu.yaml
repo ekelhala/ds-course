@@ -1,0 +1,15 @@
+# adapted from https://docs.srsran.com/projects/project/en/latest/tutorials/source/cu_du_split/source/index.html#srscu
+
+cu_cp:
+  amf:
+    no_core: true
+    addr: 127.0.1.100
+    bind_addr: 192.168.122.124
+    supported_tracking_areas:
+      - tac: 7
+        plmn_list:
+          - plmn: "00101"
+            tai_slice_support_list:
+              - sst: 1
+  f1ap:
+    bind_addr: 192.168.122.124
