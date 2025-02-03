@@ -2,7 +2,7 @@
 
 log:
   filename: stdout
-  level: info
+  cu_level: info
 
 cu_cp:
   amf:

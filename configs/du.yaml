@@ -1,6 +1,6 @@
 log:
   filename: stdout
-  level: info
+  du_level: info
 
 f1ap:
   cu_cp_addr: 192.168.122.124
