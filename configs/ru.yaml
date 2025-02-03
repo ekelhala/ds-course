@@ -5,8 +5,8 @@ log:
 ru_emu:
     cells:
     - bandwidth: 10                          # Bandwidth of the cell
-      network_interface: enp7s0               # Use BDF instead of interface name for DPDK
-      ru_mac_addr: 52:54:00:bb:bf:97          # MAC address of the RU
+      network_interface: enp1s0               # Use BDF instead of interface name for DPDK
+      ru_mac_addr: 52:54:00:ca:b9:b4          # MAC address of the RU
       du_mac_addr: 52:54:00:f4:90:71          # MAC address of the DU
       enable_promiscuous: false               # Promiscuous mode flag
       vlan_tag: 33                            # VLAN tag
