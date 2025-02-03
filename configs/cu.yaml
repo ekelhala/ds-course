@@ -1,5 +1,9 @@
 # adapted from https://docs.srsran.com/projects/project/en/latest/tutorials/source/cu_du_split/source/index.html#srscu
 
+log:
+  filename: stdout
+  level: info
+
 cu_cp:
   amf:
     no_core: true
