@@ -6,7 +6,7 @@ The RAN can be brought up by starting up each of the containers separately. The 
 
 The command to run each of the containers is: 
 
-`docker run  --rm -v configs:/configs --network host --privileged ekelhala/srsran-container <component binary> -c <corresponding config>`
+`docker run  --rm -v ./configs:/configs --network host --privileged ekelhala/srsran-container <component binary> -c /configs<corresponding config>`
 
 The binaries for the components are `srsdu` for DU, `srscu` for CU and `ru_emulator` for RU. Config files are `cu.yaml` for CU, `du.yaml` for DU and `ru.yaml` for RU.
 
