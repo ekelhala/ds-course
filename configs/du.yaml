@@ -52,9 +52,5 @@ cell_cfg:
 
 test_mode:
   test_ue:
-    rnti: 0x44
-    ri: 1
-    cqi: 15
-    nof_ues: 1
-    pusch_active: true
-    pdsch_active: true
+    rnti: 0x1
+    ri: 4
