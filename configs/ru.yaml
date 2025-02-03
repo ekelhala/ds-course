@@ -1,7 +1,3 @@
-log:
-  filename: stdout
-  level: info
-
 ru_emu:
     cells:
     - bandwidth: 10                          # Bandwidth of the cell
