@@ -20,7 +20,7 @@ spec:
         volumeMounts:
           - name: config-volume
             mountPath: "/config"
-            subPath: cu.yaml
+            readOnly: true
       volumes:
       - name: config-volume
         configMap:
