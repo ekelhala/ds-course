@@ -12,23 +12,32 @@ spec:
       labels:
         app: srsran
     spec:
-      containers:
-      - name: cu
-        image: ekelhala/srsran-container
-        command: ['sh', '-c', 'sed "s/__MY_IP__/$POD_IP/" /config/cu.yaml > /config/cu.yaml', '&&', 'srscu']
-        args: ["-c", "/config/cu.yaml"]
+      initContainers:
+      - name: init-cu
+        image: busybox
+        command: ['sh', '-c', 'sed "s/__MY_IP__/$POD_IP/" /config-template/cu.yaml > /config/cu.yaml']
         env:
         - name: POD_IP
           valueFrom:
             fieldRef:
               fieldPath: status.podIP
         volumeMounts:
+        - name: config-template-volume
+          mountPath: /config-template
+        - name: config-volume
+          mountPath: /config
+      containers:
+      - name: cu
+        image: ekelhala/srsran-container
+        command: ['srscu']
+        args: ["-c", "/config/cu.yaml"]
+        volumeMounts:
           - name: config-volume
             mountPath: "/config"
+            subPath: "cu.yaml"
       volumes:
-      - name: config-volume
+      - name: config-template-volume
         configMap:
           name: component-configs
-          items:
-          - key: "cu.yaml"
-            path: "cu.yaml"
+      - name: config-volume
+        emptyDir: {}
