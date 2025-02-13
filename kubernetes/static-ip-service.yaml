@@ -4,6 +4,6 @@ metadata:
   name: static-ip-service
 spec:
   type: ClusterIP
-  clusterIP: 10.244.0.4
+  clusterIP: 10.96.0.2
   selector:
     app: srsran
