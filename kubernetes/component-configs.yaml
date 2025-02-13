@@ -5,8 +5,8 @@ metadata:
 data:
   cu.yaml: |
     log:
-    filename: stdout
-    cu_level: info
+      filename: stdout
+      cu_level: info
 
     cu_cp:
       amf:
