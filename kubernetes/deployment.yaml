@@ -15,8 +15,13 @@ spec:
       containers:
       - name: cu
         image: ekelhala/srsran-container
-        command: ["srscu"]
+        command: ['sh', '-c', 'sed "s/__MY_IP__/$POD_IP/" /config/cu.yaml > /config/cu.yaml', '&&', 'srscu']
         args: ["-c", "/config/cu.yaml"]
+        env:
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
         volumeMounts:
           - name: config-volume
             mountPath: "/config"
