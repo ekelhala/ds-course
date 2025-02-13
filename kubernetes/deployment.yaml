@@ -15,14 +15,16 @@ spec:
       containers:
       - name: cu
         image: ekelhala/srsran-container
+        command: ["srsdu"]
+        args: ["-c", "/configs/cu.yaml"]
         volumeMounts:
-          - name: cu_config_volume
-            mountPath: /config
+          - name: config_volume
+            mountPath: "/config"
             subPath: cu.yaml
       volumes:
-      - name: cu_config_volume
+      - name: config_volume
         configMap:
-          name: cu_configmap
+          name: component-configs
           items:
-          - key: cu.yaml
-            path: cu.yaml
+          - key: "cu.yaml"
+            path: "cu.yaml"
