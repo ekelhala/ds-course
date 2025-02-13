@@ -18,11 +18,11 @@ spec:
         command: ["srsdu"]
         args: ["-c", "/config/cu.yaml"]
         volumeMounts:
-          - name: config_volume
+          - name: config-volume
             mountPath: "/config"
             subPath: cu.yaml
       volumes:
-      - name: config_volume
+      - name: config-volume
         configMap:
           name: component-configs
           items:
