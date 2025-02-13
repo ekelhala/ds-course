@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: srsran
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: srsran
+  template:
+    metadata:
+      labels:
+        app: srsran
+    spec:
+      containers:
+      - name: cu
+        image: ekelhala/srsran-container
+        volumeMounts:
+          - name: cu_config_volume
+            mountPath: /config
+            subPath: cu.yaml
+      volumes:
+      - name: cu_config_volume
+        configMap:
+          name: cu_configmap
+          items:
+          - key: cu.yaml
+            path: cu.yaml
