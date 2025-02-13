@@ -7,7 +7,6 @@ data:
     log:
       filename: stdout
       cu_level: info
-
     cu_cp:
       amf:
         no_core: true
@@ -21,7 +20,6 @@ data:
                   - sst: 1
       f1ap:
         bind_addr: __MY_IP__
-
     expert_execution:
       threads:
         non_rt:
