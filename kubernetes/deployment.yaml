@@ -15,7 +15,7 @@ spec:
       initContainers:
       - name: init-cu
         image: busybox
-        command: ['sh', '-c', 'sed "s/__MY_IP__/$POD_IP/" /config-template/cu.yaml > /config/cu.yaml']
+        command: ['sh', '-c', 'mkdir -p /config && sed "s/__MY_IP__/$POD_IP/" /config-template/cu.yaml > /config/cu.yaml']
         env:
         - name: POD_IP
           valueFrom:
@@ -29,12 +29,11 @@ spec:
       containers:
       - name: cu
         image: ekelhala/srsran-container
-        command: ['ls /config && srscu']
+        command: ['sh', '-c', 'ls /config && srscu']
         args: ["-c", "/config/cu.yaml"]
         volumeMounts:
           - name: config-volume
-            mountPath: "/config"
-            subPath: "cu.yaml"
+            mountPath: /config
       volumes:
       - name: config-template-volume
         configMap:
