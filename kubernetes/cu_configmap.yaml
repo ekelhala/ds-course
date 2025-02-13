@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cu_configmap
+data:
+  cu.yaml: |
+    log:
+    filename: stdout
+    cu_level: info
+
+    cu_cp:
+      amf:
+        no_core: true
+        addr: 127.0.1.100
+        bind_addr: 192.168.122.124
+        supported_tracking_areas:
+          - tac: 7
+            plmn_list:
+              - plmn: "00101"
+                tai_slice_support_list:
+                  - sst: 1
+    f1ap:
+      bind_addr: 192.168.122.124
+
+    expert_execution:
+      threads:
+        non_rt:
+          nof_non_rt_threads: 2
