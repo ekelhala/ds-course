@@ -37,9 +37,9 @@ spec:
           privileged: true
         resources:
           requests:
-            memory: "1Gi"
+            memory: "5Gi"
           limits:
-            memory: "2Gi"
+            memory: "7Gi"
       volumes:
       - name: config-template-volume
         configMap:
