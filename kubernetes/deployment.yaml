@@ -35,6 +35,11 @@ spec:
             mountPath: /config
         securityContext:
           privileged: true
+        resources:
+          requests:
+            memory: "1200Mi"
+          limits:
+            memory: "1800Mi"
       volumes:
       - name: config-template-volume
         configMap:
