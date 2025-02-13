@@ -29,7 +29,7 @@ spec:
       containers:
       - name: cu
         image: ekelhala/srsran-container
-        command: ['srscu']
+        command: ['ls /config && srscu']
         args: ["-c", "/config/cu.yaml"]
         volumeMounts:
           - name: config-volume
