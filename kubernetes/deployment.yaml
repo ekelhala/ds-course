@@ -16,7 +16,7 @@ spec:
       - name: cu
         image: ekelhala/srsran-container
         command: ["srsdu"]
-        args: ["-c", "/configs/cu.yaml"]
+        args: ["-c", "/config/cu.yaml"]
         volumeMounts:
           - name: config_volume
             mountPath: "/config"
