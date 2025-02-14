@@ -1,10 +1,11 @@
+from typing import List
 from fastapi import APIRouter
 
-from routes.schemas import ResourceRequest
+from routes.schemas import ResourceRequest, ResourceCreationResponse, Resource
 
 router = APIRouter()
 
-@router.post("/")
+@router.post("/", response_model=ResourceCreationResponse)
 def request_resources(req: ResourceRequest):
     """
     Request for provisioning of resources (CU, DU)
@@ -12,7 +13,7 @@ def request_resources(req: ResourceRequest):
     response if successfull
     """
 
-@router.get("/")
+@router.get("/", response_model=List[Resource])
 def get_resources():
     """
     Returns the resources currently in use by the client
