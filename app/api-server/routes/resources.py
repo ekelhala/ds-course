@@ -1,9 +1,11 @@
 from fastapi import APIRouter
 
+from routes.schemas import ResourceRequest
+
 router = APIRouter()
 
 @router.post("/")
-def request_resources():
+def request_resources(req: ResourceRequest):
     """
     Request for provisioning of resources (CU, DU)
     sends connection details for the core-CU connection as a
