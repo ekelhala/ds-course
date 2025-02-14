@@ -1,4 +1,4 @@
-# Service architecture for RANaaS service using srsRAN and Kubernetes
+# Service architecture for RANaaS implementation using srsRAN and Kubernetes
 
 The proposed architecture consists of an API microservice that receives resource requests from core network operators, and forwards them to a worker microservice that provisions the required resources (virtualized CU and DU), and connects the DU to a number of RUs.
 
