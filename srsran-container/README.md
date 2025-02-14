@@ -1,4 +1,6 @@
-The configurations and the container in this repository can be used to launch a virtual RAN with srsRAN. Currently, three containers are used for the RU, DU and CU. A test UE is defined in the DU configuration file, which can be used to verify the functionality of the setup.
+# srsRAN container
+
+The configurations and the container in this repository can be used to launch a virtual RAN with srsRAN. Currently, three containers are used for the RU, DU and CU. A test UE is defined in the DU configuration file, which can be used to verify the functionality of the setup. The container image is available at [https://hub.docker.com/r/ekelhala/srsran-container](https://hub.docker.com/r/ekelhala/srsran-container)
 
 ## Running
 
