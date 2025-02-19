@@ -8,7 +8,8 @@ connection_credentials = pika.PlainCredentials(username=os.getenv("RABBITMQ_USER
 connection_params = pika.ConnectionParameters(
                                                 host=os.getenv("RABBITMQ_BROKER"),
                                                 port=os.getenv("RABBITMQ_PORT"),
-                                                credentials=connection_credentials)
+                                                credentials=connection_credentials,
+                                                heartbeat=300)
 
 connection = pika.BlockingConnection()
 channel = connection.channel()
