@@ -8,7 +8,6 @@ from amqp_client import AMQPClient
 router = APIRouter()
 
 amqp_client = AMQPClient()
-amqp_client.connect()
 
 @router.post("/", response_model=ResourceCreationResponse)
 def request_resources(req: ResourceRequest):
@@ -18,11 +17,13 @@ def request_resources(req: ResourceRequest):
     response if successful
     """
     try:
+        amqp_client.connect()
         amqp_client.send(json.dumps({
             "core_ip": req.core_ip,
             "core_port": req.core_port,
             "num_rus": req.num_rus
         }))
+        amqp_client.close()
         return {
             "resource": {
                 "bind_address":"",
