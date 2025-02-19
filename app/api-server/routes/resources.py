@@ -10,7 +10,7 @@ def request_resources(req: ResourceRequest):
     """
     Request for provisioning of resources (CU, DU)
     sends connection details for the core-CU connection as a
-    response if successfull
+    response if successful
     """
 
 @router.get("/", response_model=List[Resource])
