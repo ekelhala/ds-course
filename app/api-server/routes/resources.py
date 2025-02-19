@@ -1,3 +1,4 @@
+import json
 from typing import List
 from fastapi import APIRouter, HTTPException
 
@@ -17,13 +18,16 @@ def request_resources(req: ResourceRequest):
     response if successful
     """
     try:
-        amqp_client.send({
+        amqp_client.send(json.dumps({
             "core_ip": req.core_ip,
             "core_port": req.core_port,
             "num_rus": req.num_rus
-        })
+        }))
         return {
-            "resource": None,
+            "resource": {
+                "bind_address":"",
+                "num_rus": 1
+            },
             "status": CreationStatus.OK,
             "message": "test"
         }

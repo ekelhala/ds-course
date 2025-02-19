@@ -1,7 +1,6 @@
 import os
 import pika
 from dotenv import load_dotenv
-load_dotenv()
 
 class AMQPClient():
 
@@ -11,6 +10,7 @@ class AMQPClient():
         self._queue_name = "work-queue"
 
     def connect(self):
+        load_dotenv()
         connection_credentials = pika.PlainCredentials(username=os.getenv("RABBITMQ_USERNAME"),
                                                         password=os.getenv("RABBITMQ_PASSWORD"))
         connection_params = pika.ConnectionParameters(
