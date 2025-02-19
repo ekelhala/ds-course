@@ -23,4 +23,6 @@ class AMQPClient():
         self._channel.basic_publish(exchange="",
                                     routing_key=self._queue_name,
                                     body=message)
-        
+    
+    def close(self):
+        self._connection.close()
