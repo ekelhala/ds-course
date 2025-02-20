@@ -54,7 +54,8 @@ spec:
         configMap:
           name: scripts-config
       - name: shared
-        emptyDir: {}
+        persistentVolumeClaim:
+          claimName: shared-pvc
       
 ---
 apiVersion: apps/v1
@@ -114,3 +115,6 @@ spec:
       - name: script-volume
         configMap:
           name: scripts-config
+      - name: shared
+        persistentVolumeClaim:
+          claimName: shared-pvc
