@@ -59,7 +59,7 @@ spec:
             memory: "7Gi"
       - name: du
         image: ekelhala/srsran-container
-        command: ["sh", "-c", "cat", "/config/du.yaml && sleep 3600"]
+        command: ['sh', '-c', 'cat /config/du.yaml && srsdu -c /config/cu.yaml']
         volumeMounts:
           - name: config-volume
             mountPath: /config
