@@ -42,6 +42,15 @@ spec:
             memory: "5Gi"
           limits:
             memory: "7Gi"
+      volumes:
+      - name: config-template-volume
+        configMap:
+          name: component-configs
+      - name: config-volume
+        emptyDir: {}
+      - name: script-volume
+        configMap:
+          name: scripts-config
       
 ---
 apiVersion: apps/v1
