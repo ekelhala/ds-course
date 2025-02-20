@@ -28,11 +28,11 @@ data:
           nof_non_rt_threads: 2
   du.yaml: |
     f1ap:
-      cu_cp_addr: 192.168.122.124
-      bind_addr: 192.168.122.123
+      cu_cp_addr: __CU_IP__
+      bind_addr: __MY_IP__
 
       nru:
-        bind_addr: 192.168.122.123
+        bind_addr: __MY_IP__
 
       ru_ofh:
         t1a_max_cp_dl: 470

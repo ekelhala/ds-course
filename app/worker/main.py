@@ -1,3 +1,4 @@
+import json
 import os
 import pika
 from dotenv import load_dotenv
@@ -16,7 +17,7 @@ channel = connection.channel()
 channel.queue_declare("work-queue")
 
 def work_callback(ch, method, properties, body):
-    print(f"received {body}")
+    resource_details = json.loads(body)
 
 channel.basic_consume(queue="work-queue",
                         on_message_callback=work_callback,
