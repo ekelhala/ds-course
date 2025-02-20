@@ -59,7 +59,7 @@ spec:
             memory: "7Gi"
       - name: du
         image: ekelhala/srsran-container
-        command: ["ip a && srsdu"]
+        command: ["srsdu"]
         args: ["-c", "/config/du.yaml"]
         volumeMounts:
           - name: config-volume
