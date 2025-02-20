@@ -89,51 +89,6 @@ spec:
             mountPath: /scripts
           - name: shared
             mountPath: /shared
-      containers:
-        - name: du
-          image: ekelhala/srsran-container
-          command: ['sh', '-c', 'cat /config/du.yaml && srsdu -c /config/du.yaml']
-          volumeMounts:
-            - name: config-volume
-              mountPath: /config
-          securityContext:
-            privileged: true
-            capabilities:
-              add: ["NET_ADMIN"]
-            runAsUser: 0
-          resources:
-            requests:
-              memory: "2Gi"
-            limits:
-              memory: "5Gi"
-      volumes:
-      - name: config-template-volume
-        configMap:
-          name: component-configs
-      - name: config-volume
-        emptyDir: {}
-      - name: script-volume
-        configMap:
-          name: scripts-config
-      - name: shared
-        persistentVolumeClaim:
-          claimName: shared-pvc
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: srsran-ru
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: srsran-ru
-  template:
-    metadata:
-      labels:
-        app: srsran-ru
-    spec:
-      initContainers:
         - name: init-ru
           image: busybox
           command: ['sh', '/scripts/network-info-ru.sh']
@@ -152,6 +107,22 @@ spec:
             mountPath: /shared
       containers:
         - name: du
+          image: ekelhala/srsran-container
+          command: ['sh', '-c', 'cat /config/du.yaml && srsdu -c /config/du.yaml']
+          volumeMounts:
+            - name: config-volume
+              mountPath: /config
+          securityContext:
+            privileged: true
+            capabilities:
+              add: ["NET_ADMIN"]
+            runAsUser: 0
+          resources:
+            requests:
+              memory: "2Gi"
+            limits:
+              memory: "5Gi"
+        - name: ru
           image: ekelhala/srsran-container
           command: ['sh', '-c', 'cat /config/ru.yaml && ru_emulator -c /config/ru.yaml']
           volumeMounts:
