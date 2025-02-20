@@ -54,9 +54,9 @@ data:
       enable_dl_static_compr_hdr: true
       iq_scaling: 1.0
       cells:
-      - network_interface: enp1s0
+      - network_interface: ens3
         ru_mac_addr: 52:54:00:ca:b9:b4
-        du_mac_addr: 52:54:00:f4:90:71
+        du_mac_addr: fa:16:3e:d6:02:a7
         prach_port_id: [4]
         dl_port_id: [0, 1, 2, 3]
         ul_port_id: [0]
