@@ -30,6 +30,7 @@ data:
     log:
       filename: stdout
       ofh_level: error
+      mac_level: error
 
     f1ap:
       cu_cp_addr: __CU_IP__
