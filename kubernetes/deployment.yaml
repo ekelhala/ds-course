@@ -15,7 +15,7 @@ spec:
       initContainers:
       - name: init-cu
         image: busybox
-        command: ['sh', '-c', '/scripts/network-info-cu.sh']
+        command: ['sh', '/scripts/network-info-cu.sh']
         securityContext:
           capabilities:
             add: ["NET_ADMIN"]
