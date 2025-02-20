@@ -41,6 +41,20 @@ spec:
             memory: "5Gi"
           limits:
             memory: "7Gi"
+      - name: du
+        image: ekelhala/srsran-container
+        command: ["srsdu"]
+        args: ["-c", "/config/du.yaml"]
+        volumeMounts:
+          - name: config-volume
+            mountPath: /config
+        securityContext:
+          privileged: true
+        resources:
+          requests:
+            memory: "2Gi"
+          limits:
+            memory: "5Gi"
       volumes:
       - name: config-template-volume
         configMap:
