@@ -15,22 +15,21 @@ spec:
       initContainers:
       - name: init-cu
         image: busybox
-        command: ['sh', '-c',
-                 'mkdir -p /config && sed "s/__MY_IP__/$POD_IP/" /config-template/cu.yaml > /config/cu.yaml',
-                 '&& sed "s/__CU_IP__/$POD_IP/" /config-template/du.yaml > /config-template/du.yaml']
-        env:
-        - name: POD_IP
-          valueFrom:
-            fieldRef:
-              fieldPath: status.podIP
+        command: ['sh', '-c', '/scripts/network-info-cu.sh']
+        securityContext:
+          capabilities:
+            add: ["NET_ADMIN"]
+          runAsUser: 0
         volumeMounts:
         - name: config-template-volume
           mountPath: /config-template
         - name: config-volume
           mountPath: /config
+        - name: script-volume
+        mountPath: /scripts
       - name: init-du
         image: busybox
-        command: ['sh', '/scripts/network-info.sh']
+        command: ['sh', '/scripts/network-info-du.sh']
         securityContext:
           capabilities:
             add: ["NET_ADMIN"]
