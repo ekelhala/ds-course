@@ -31,6 +31,9 @@ spec:
       - name: init-du
         image: busybox
         command: ['sh', '-c', '/scripts/network-info.sh']
+        securityContext:
+          capabilities:
+            add: ["NET_ADMIN"]
         volumeMounts:
         - name: config-template-volume
           mountPath: /config-template
