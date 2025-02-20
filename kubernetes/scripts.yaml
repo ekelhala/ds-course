@@ -8,6 +8,6 @@ data:
     INTERFACE_NAME=$(ip -o link show | awk -F': ' '{print $2}' | head -n 1)
     IP_ADDRESS=$(ip -o -4 addr list eth0 | awk '{print $4}' | cut -d/ -f1)
     MAC_ADDRESS=$(cat /sys/class/net/eth0/address)
-    sed -i -e "s/__MY_INTERFACE__/${INTERFACE_NAME}/" \
+    sed -e "s/__MY_INTERFACE__/${INTERFACE_NAME}/" \
            -e "s/__MY_IP__/${IP_ADDRESS}/" \
            -e "s/__MY_MAC__/${MAC_ADDRESS}/" /config-template/du.yaml > /config/du.yaml
