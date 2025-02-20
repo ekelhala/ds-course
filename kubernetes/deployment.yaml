@@ -1,35 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: srsran
+  name: srsran-cu
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: srsran
+      app: srsran-cu
   template:
     metadata:
       labels:
-        app: srsran
+        app: srsran-cu
     spec:
       initContainers:
       - name: init-cu
         image: busybox
         command: ['sh', '/scripts/network-info-cu.sh']
-        securityContext:
-          capabilities:
-            add: ["NET_ADMIN"]
-          runAsUser: 0
-        volumeMounts:
-        - name: config-template-volume
-          mountPath: /config-template
-        - name: config-volume
-          mountPath: /config
-        - name: script-volume
-          mountPath: /scripts
-      - name: init-du
-        image: busybox
-        command: ['sh', '/scripts/network-info-du.sh']
         securityContext:
           capabilities:
             add: ["NET_ADMIN"]
@@ -56,22 +42,54 @@ spec:
             memory: "5Gi"
           limits:
             memory: "7Gi"
-      - name: du
-        image: ekelhala/srsran-container
-        command: ['sh', '-c', 'cat /config/du.yaml && srsdu -c /config/du.yaml']
-        volumeMounts:
+      
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: srsran-du
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: srsran-du
+  template:
+    metadata:
+      labels:
+        app: srsran-du
+    spec:
+      initContainers:
+        - name: init-du
+          image: busybox
+          command: ['sh', '/scripts/network-info-du.sh']
+          securityContext:
+            capabilities:
+              add: ["NET_ADMIN"]
+            runAsUser: 0
+          volumeMounts:
+          - name: config-template-volume
+            mountPath: /config-template
           - name: config-volume
             mountPath: /config
-        securityContext:
-          privileged: true
-          capabilities:
-            add: ["NET_ADMIN"]
-          runAsUser: 0
-        resources:
-          requests:
-            memory: "2Gi"
-          limits:
-            memory: "5Gi"
+          - name: script-volume
+            mountPath: /scripts
+      containers:
+        - name: du
+          image: ekelhala/srsran-container
+          command: ['sh', '-c', 'cat /config/du.yaml && srsdu -c /config/du.yaml']
+          volumeMounts:
+            - name: config-volume
+              mountPath: /config
+          securityContext:
+            privileged: true
+            capabilities:
+              add: ["NET_ADMIN"]
+            runAsUser: 0
+          resources:
+            requests:
+              memory: "2Gi"
+            limits:
+              memory: "5Gi"
       volumes:
       - name: config-template-volume
         configMap:
@@ -80,4 +98,4 @@ spec:
         emptyDir: {}
       - name: script-volume
         configMap:
-           name: scripts-config
+          name: scripts-config
