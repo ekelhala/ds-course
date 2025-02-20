@@ -31,7 +31,7 @@ spec:
       - name: init-du
         image: busybox
         command: ['sh', '-c',
-                  'mkdir -p /config && sed "s/__MY_IP__/$POD_IP" /config-template/du.yaml > /config/du.yaml']
+                  'mkdir -p /config && sed "s/__MY_IP__/$POD_IP/" /config-template/du.yaml > /config/du.yaml']
         volumeMounts:
         - name: config-template-volume
           mountPath: /config-template
