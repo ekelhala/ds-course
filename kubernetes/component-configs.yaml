@@ -56,6 +56,12 @@ data:
       enable_ul_static_compr_hdr: true
       enable_dl_static_compr_hdr: true
       iq_scaling: 1.0
+      cells:
+      - network_interface: __MY_IF__
+        du_mac_addr: __MY_MAC__
+        prach_port_id: [4]
+        dl_port_id: [0, 1, 2, 3]
+        ul_port_id: [0]
 
     cell_cfg:
       dl_arfcn: 625000
@@ -81,3 +87,13 @@ data:
       test_ue:
         rnti: 0x1
         ri: 4
+  ru.yaml: |
+    ru_emu:
+      cells:
+      - bandwidth: 100
+        network_interface: __MY_IF__
+        du_mac_addr: __DU_MAC__
+        vlan_tag: 2
+        ul_port_id: [0]
+        compr_method_ul: "bfp"
+        compr_bitwidth_ul: 9
