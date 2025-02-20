@@ -64,6 +64,9 @@ spec:
             mountPath: /config
         securityContext:
           privileged: true
+          capabilities:
+            add: ["NET_ADMIN"]
+          runAsUser: 0
         resources:
           requests:
             memory: "2Gi"
