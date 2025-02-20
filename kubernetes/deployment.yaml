@@ -17,7 +17,7 @@ spec:
         image: busybox
         command: ['sh', '-c',
                  'mkdir -p /config && sed "s/__MY_IP__/$POD_IP/" /config-template/cu.yaml > /config/cu.yaml',
-                 '&& sed "s/__CU_IP__/$POD_IP/" /config-template/du.yaml > /config/du.yaml']
+                 '&& sed "s/__CU_IP__/$POD_IP/" /config-template/du.yaml > /config-template/du.yaml']
         env:
         - name: POD_IP
           valueFrom:
