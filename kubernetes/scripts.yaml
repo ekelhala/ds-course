@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: network-script
+  name: scripts-config
 data:
   network-info.sh: |
     #!/bin/sh

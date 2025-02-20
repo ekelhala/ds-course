@@ -30,18 +30,14 @@ spec:
           mountPath: /config
       - name: init-du
         image: busybox
-        command: ['sh', '-c',
-                  'mkdir -p /config && sed "s/__MY_IP__/$POD_IP/" /config-template/du.yaml > /config/du.yaml']
-        env:
-        - name: POD_IP
-          valueFrom:
-            fieldRef:
-              fieldPath: status.podIP
+        command: ['sh', '-c', '/scripts/network-info.sh']
         volumeMounts:
         - name: config-template-volume
           mountPath: /config-template
         - name: config-volume
           mountPath: /config
+        - name: script-volume
+          mountPath: /scripts
       containers:
       - name: cu
         image: ekelhala/srsran-container
@@ -77,3 +73,6 @@ spec:
           name: component-configs
       - name: config-volume
         emptyDir: {}
+      - name: script-volume
+        configMap:
+           name: scripts-config
