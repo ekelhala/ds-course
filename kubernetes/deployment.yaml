@@ -30,7 +30,7 @@ spec:
           mountPath: /config
       - name: init-du
         image: busybox
-        command: ['sh', '-c', 'chmod +x /scripts/network-info.sh', '&& sh', '/scripts/network-info.sh']
+        command: ['sh', '/scripts/network-info.sh']
         securityContext:
           capabilities:
             add: ["NET_ADMIN"]
