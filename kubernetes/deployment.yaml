@@ -135,9 +135,9 @@ spec:
             runAsUser: 0
           resources:
             requests:
-              memory: "2Gi"
-            limits:
               memory: "5Gi"
+            limits:
+              memory: "6Gi"
       volumes:
       - name: config-template-volume
         configMap:
