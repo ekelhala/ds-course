@@ -27,6 +27,9 @@ data:
         non_rt:
           nof_non_rt_threads: 2
   du.yaml: |
+    log:
+      filename: stdout
+
     f1ap:
       cu_cp_addr: __CU_IP__
       bind_addr: __MY_IP__
