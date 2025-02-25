@@ -3,6 +3,7 @@ import os
 import pika
 from dotenv import load_dotenv
 load_dotenv()
+from kubernetes import client, config
 
 connection_credentials = pika.PlainCredentials(username=os.getenv("RABBITMQ_USERNAME"),
                                                 password=os.getenv("RABBITMQ_PASSWORD"))
@@ -11,6 +12,10 @@ connection_params = pika.ConnectionParameters(
                                                 port=os.getenv("RABBITMQ_PORT"),
                                                 credentials=connection_credentials,
                                                 heartbeat=300)
+
+config.load_incluster_config()
+
+kubernetes_client = client.CoreV1Api()
 
 connection = pika.BlockingConnection()
 channel = connection.channel()
