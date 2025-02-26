@@ -7,12 +7,11 @@ def create_pod(kubernetes_client, definition):
     except client.exceptions.ApiException:
         return False
 
-def make_cu_configmap(core_ip: str, core_port: int):
+def make_cu_configmap(core_ip: str, core_port: int, config_id: str):
     """
     Creates a ConfigMap to start up a new CU
     based on given parameters
     """
-    cu_id = 0
     config_data = f"""
     log:
       filename: stdout
@@ -41,7 +40,7 @@ def make_cu_configmap(core_ip: str, core_port: int):
         api_version="v1",
         kind="ConfigMap",
         metadata=client.V1ObjectMeta(
-            name=f"cu-config-{cu_id}",
+            name=f"cu-config-{config_id}",
         ),
         data={"cu.yaml": config_data}
     )

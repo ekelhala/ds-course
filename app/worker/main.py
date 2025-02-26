@@ -1,3 +1,4 @@
+import uuid
 import json
 import os
 import pika
@@ -24,9 +25,12 @@ channel.queue_declare("work-queue")
 
 def work_callback(ch, method, properties, body):
     resource_details = json.loads(body)
-    du_config = helpers.make_du_manifest(resource_details.core_ip,
-                                         resource_details.core_port)
-    if helpers.create_pod(kubernetes_client, du_config):
+    config_id = str(uuid.uuid4())
+    cu_config = helpers.make_cu_configmap(resource_details.core_ip,
+                                         resource_details.core_port,
+                                         config_id)
+    
+    if helpers.create_pod(kubernetes_client, cu_config):
         channel.basic_publish(exchange="",
                                 routing_key="work-queue",
                                 body="")
