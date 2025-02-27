@@ -31,9 +31,7 @@ def work_callback(ch, method, properties, body):
                                          config_id)
     kubernetes_client.create_namespaced_config_map(namespace="default", body=cu_config)
     if helpers.create_deployment(kubernetes_client, config_id):
-        channel.basic_publish(exchange="",
-                                routing_key="work-queue",
-                                body="")
+        print("New deployment created")
 
 channel.basic_consume(queue="work-queue",
                         on_message_callback=work_callback,
