@@ -29,8 +29,8 @@ def work_callback(ch, method, properties, body):
     cu_config = helpers.make_cu_configmap(resource_details.core_ip,
                                          resource_details.core_port,
                                          config_id)
-    
-    if helpers.create_pod(kubernetes_client, cu_config):
+    kubernetes_client.create_namespaced_config_map(namespace="default", body=cu_config)
+    if helpers.create_deployment(kubernetes_client, config_id):
         channel.basic_publish(exchange="",
                                 routing_key="work-queue",
                                 body="")
