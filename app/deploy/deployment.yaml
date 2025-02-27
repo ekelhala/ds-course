@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: srsran-service-stack
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: srsran-service-stack
+  template:
+    metadata:
+      labels:
+        app: srsran-service-stack
+    spec:
+      containers:
+        - name: srsran-worker
+          image: ekelhala/srsran-worker
+        - name: srsran-api-server
+          image: ekelhala/srsran-api-server
+        - name: rabbitmq-broker
+          image: rabbitmq
