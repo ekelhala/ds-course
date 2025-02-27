@@ -13,9 +13,24 @@ spec:
         app: srsran-service-stack
     spec:
       containers:
+        - name: rabbitmq-broker
+          image: rabbitmq
         - name: srsran-worker
           image: ekelhala/srsran-worker
         - name: srsran-api-server
           image: ekelhala/srsran-api-server
-        - name: rabbitmq-broker
-          image: rabbitmq
+          ports:
+            containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: srsran-api-server-service
+spec:
+  selector:
+    app: srsran-service-stack
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: LoadBalancer
