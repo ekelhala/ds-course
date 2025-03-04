@@ -6,6 +6,10 @@ from dotenv import load_dotenv
 load_dotenv()
 from kubernetes import client, config
 import helpers
+import logging
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+logger = logging.getLogger(__name__)
 
 connection_credentials = pika.PlainCredentials(username=os.getenv("RABBITMQ_USERNAME"),
                                                 password=os.getenv("RABBITMQ_PASSWORD"))
@@ -25,7 +29,7 @@ channel = connection.channel()
 channel.queue_declare("work-queue")
 
 def work_callback(ch, method, properties, body):
-    print("message received")
+    logger.info("message received")
     resource_details = json.loads(body)
     config_id = str(uuid.uuid4())
     cu_config = helpers.make_cu_configmap(resource_details["core_ip"],
@@ -35,14 +39,13 @@ def work_callback(ch, method, properties, body):
     deployment_config = helpers.make_deployment_config(config_id)
     try:
         apps_client.create_namespaced_deployment(namespace="default", body=deployment_config)
-        print("deployment created")
+        logger.info("deployment %s created", str(config_id))
     except client.exceptions.ApiException as e:
-        print("deployment create failed")
+        logger.error("deployment create failed")
         print(str(e))
 
 channel.basic_consume(queue="work-queue",
                         on_message_callback=work_callback,
                         auto_ack=True)
-
+logger.info("worker started")
 channel.start_consuming()
-print("worker started")
