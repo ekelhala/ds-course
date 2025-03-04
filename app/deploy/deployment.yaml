@@ -24,6 +24,13 @@ spec:
             - containerPort: 80
         - name: mongo
           image: mongo
+          volumeMounts:
+            - mountPath: "/data/db"
+              name: mongodb-storage
+      volumes:
+        - name: mongodb-storage
+          persistentVolumeClaim:
+            claimName: db-volume-claim
 ---
 apiVersion: v1
 kind: Service
@@ -98,3 +105,28 @@ data:
      sed -e "s/__MY_IF__/${INTERFACE_NAME}/" \
           -e "s/__DU_MAC__/${DU_MAC_ADDRESS}/" \
           /config-template/ru.yaml > /config/ru.yaml
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: db-volume
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/data"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: db-volume-claim
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
