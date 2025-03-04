@@ -1,3 +1,4 @@
+import logging
 import json
 from typing import List
 from fastapi import APIRouter, HTTPException
@@ -8,6 +9,9 @@ from amqp_client import AMQPClient
 router = APIRouter()
 
 amqp_client = AMQPClient()
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+logger = logging.getLogger(__name__)
 
 @router.post("/", response_model=ResourceCreationResponse)
 def request_resources(req: ResourceRequest):
@@ -37,6 +41,7 @@ def request_resources(req: ResourceRequest):
             "resource_id": worker_response["id"]
         }
     except KeyError as e:
+        logging.error("error in POST: %s",str(e))
         raise HTTPException(400, "Missing fields") from e
 
 @router.get("/", response_model=List[Resource])
@@ -46,7 +51,7 @@ def get_resources():
     and the connection details for those resources.
     """
 
-@router.delete("/")
+@router.delete("/{resource_id}/")
 def delete_resource(resource_id: str):
     """
     Deletes a resource (deployment) with given id
@@ -60,6 +65,6 @@ def delete_resource(resource_id: str):
             }
         }))
         amqp_client.close()
-        return {"status": ResponseStatus.OK, "message": "resource deleted"}
+        return {"status": ResponseStatus.OK, "message": worker_response["message"]}
     except:
         raise HTTPException(500, "Error deleting resource")

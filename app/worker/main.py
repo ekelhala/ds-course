@@ -33,10 +33,11 @@ def work_callback(ch, method, properties, body):
         logger.info("message received")
         resource_details = json.loads(body)
         if resource_details["command"] == "create":
+            data = resource_details["data"]
             config_id = str(uuid.uuid4())
-            cu_config = helpers.make_configmap(resource_details["core_ip"],
-                                                    resource_details["core_port"],
-                                                    config_id)
+            cu_config = helpers.make_configmap(data["core_ip"],
+                                               data["core_port"],
+                                               config_id)
             kubernetes_client.create_namespaced_config_map(namespace="default", body=cu_config)
             deployment_config = helpers.make_deployment_config(config_id)
             try:
@@ -61,7 +62,7 @@ def work_callback(ch, method, properties, body):
                 logger.error("deployment create failed: %s", str(e))
         else:
             deployment_id = resource_details["data"]["resource_id"]
-            apps_client.delete_namespaced_deployment(deployment_id, namespace="default")
+            apps_client.delete_namespaced_deployment(f"srsran-{deployment_id}", namespace="default")
             response_body = json.dumps({
                 "message": "resource deleted"
             })

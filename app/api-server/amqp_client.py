@@ -51,4 +51,5 @@ class AMQPClient():
         return json.loads(response_decoded)
     
     def close(self):
+        self._channel.close()
         self._connection.close()
