@@ -10,7 +10,7 @@ class ResourceRequest(BaseModel):
     core_ip: str # AMF IP address of the core network for CU
     core_port: int # AMF port of the core for CU to connect to
 
-class CreationStatus(Enum):
+class ResponseStatus(Enum):
     OK = "ok"
     ERROR = "error"
     ERROR_NOT_ENOUGH_RESOURCES = "error_not_enough_resources"
@@ -28,6 +28,6 @@ class ResourceCreationResponse(BaseModel):
     and connection details
     """
     resource: Resource
-    status: CreationStatus # indicates the result of the request
+    status: ResponseStatus # indicates the result of the request
     message: str = "" # message that provides more information
     resource_id: str # unique id for the resource

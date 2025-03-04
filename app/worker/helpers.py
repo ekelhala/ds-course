@@ -51,7 +51,7 @@ def make_deployment_config(unique_id):
       api_version="apps/v1",
       kind="Deployment",
       metadata=client.V1ObjectMeta(
-        name=f"srsran-cu-{unique_id}"
+        name=f"srsran-{unique_id}"
       ),
       spec=client.V1DeploymentSpec(
         replicas=1,

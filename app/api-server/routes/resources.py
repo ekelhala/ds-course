@@ -2,7 +2,7 @@ import json
 from typing import List
 from fastapi import APIRouter, HTTPException
 
-from routes.schemas import ResourceRequest, ResourceCreationResponse, Resource, CreationStatus
+from routes.schemas import ResourceRequest, ResourceCreationResponse, Resource, ResponseStatus
 from amqp_client import AMQPClient
 
 router = APIRouter()
@@ -19,9 +19,12 @@ def request_resources(req: ResourceRequest):
     try:
         amqp_client.connect()
         worker_response = amqp_client.send(json.dumps({
-            "core_ip": req.core_ip,
-            "core_port": req.core_port,
-            "num_rus": req.num_rus
+            "command": "create",
+            "data": {
+                "core_ip": req.core_ip,
+                "core_port": req.core_port,
+                "num_rus": req.num_rus
+            }
         }))
         amqp_client.close()
         return {
@@ -29,7 +32,7 @@ def request_resources(req: ResourceRequest):
                 "bind_address":"",
                 "num_rus": 1
             },
-            "status": CreationStatus.OK,
+            "status": ResponseStatus.OK,
             "message": worker_response["message"],
             "resource_id": worker_response["id"]
         }
@@ -42,3 +45,21 @@ def get_resources():
     Returns the resources currently in use by the client
     and the connection details for those resources.
     """
+
+@router.delete("/")
+def delete_resource(resource_id: str):
+    """
+    Deletes a resource (deployment) with given id
+    """
+    try:
+        amqp_client.connect()
+        worker_response = amqp_client.send(json.dumps({
+            "command": "delete",
+            "data": {
+                "resource_id": resource_id
+            }
+        }))
+        amqp_client.close()
+        return {"status": ResponseStatus.OK, "message": "resource deleted"}
+    except:
+        raise HTTPException(500, "Error deleting resource")

@@ -32,32 +32,48 @@ def work_callback(ch, method, properties, body):
     try:
         logger.info("message received")
         resource_details = json.loads(body)
-        config_id = str(uuid.uuid4())
-        cu_config = helpers.make_configmap(resource_details["core_ip"],
-                                                resource_details["core_port"],
-                                                config_id)
-        kubernetes_client.create_namespaced_config_map(namespace="default", body=cu_config)
-        deployment_config = helpers.make_deployment_config(config_id)
-        try:
-            apps_client.create_namespaced_deployment(namespace="default", body=deployment_config)
-            logger.info("deployment %s created", str(config_id))
-            
+        if resource_details["command"] == "create":
+            config_id = str(uuid.uuid4())
+            cu_config = helpers.make_configmap(resource_details["core_ip"],
+                                                    resource_details["core_port"],
+                                                    config_id)
+            kubernetes_client.create_namespaced_config_map(namespace="default", body=cu_config)
+            deployment_config = helpers.make_deployment_config(config_id)
+            try:
+                apps_client.create_namespaced_deployment(namespace="default", body=deployment_config)
+                logger.info("deployment %s created", str(config_id))
+                
+                response_body = json.dumps({
+                    "id": config_id,
+                    "message": "resources created"
+                })
+                
+                channel.basic_publish(
+                    exchange="",
+                    routing_key=properties.reply_to,
+                    properties=pika.BasicProperties(
+                        correlation_id=properties.correlation_id
+                    ),
+                    body=response_body.encode("utf-8")
+                )
+                channel.basic_ack(delivery_tag=method.delivery_tag)
+            except client.exceptions.ApiException as e:
+                logger.error("deployment create failed: %s", str(e))
+        else:
+            deployment_id = resource_details["data"]["resource_id"]
+            apps_client.delete_namespaced_deployment(deployment_id, namespace="default")
             response_body = json.dumps({
-                "id": config_id,
-                "message": "OK"
+                "message": "resource deleted"
             })
-            
             channel.basic_publish(
                 exchange="",
-                routing_key=properties.reply_to,
-                properties=pika.BasicProperties(
-                    correlation_id=properties.correlation_id
-                ),
-                body=response_body.encode("utf-8")
+                    routing_key=properties.reply_to,
+                    properties=pika.BasicProperties(
+                        correlation_id=properties.correlation_id
+                    ),
+                    body=response_body.encode("utf-8")
             )
             channel.basic_ack(delivery_tag=method.delivery_tag)
-        except client.exceptions.ApiException as e:
-            logger.error("deployment create failed: %s", str(e))
     except Exception as e:
         logger.error("error in work_callback %s", str(e))
 
