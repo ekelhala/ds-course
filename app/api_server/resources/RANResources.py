@@ -1,5 +1,5 @@
 import json
-from flask import request, Response
+from flask import request, Response, jsonify
 from flask_restful import Resource
 from werkzeug.exceptions import UnsupportedMediaType, InternalServerError, BadRequest
 from jsonschema import validate, ValidationError
@@ -22,6 +22,9 @@ class RANResourceItem(Resource):
                 "num_rus": {"type": "number"}
             }
         }
+
+    def get(self, ran_resource):
+        return jsonify(ran_resource.to_json())
 
     def delete(self, ran_resource):
         request_body = {
