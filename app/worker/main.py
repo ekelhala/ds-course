@@ -29,20 +29,23 @@ channel = connection.channel()
 channel.queue_declare("work-queue")
 
 def work_callback(ch, method, properties, body):
-    logger.info("message received")
-    resource_details = json.loads(body)
-    config_id = str(uuid.uuid4())
-    cu_config = helpers.make_cu_configmap(resource_details["core_ip"],
-                                         resource_details["core_port"],
-                                         config_id)
-    kubernetes_client.create_namespaced_config_map(namespace="default", body=cu_config)
-    deployment_config = helpers.make_deployment_config(config_id)
     try:
-        apps_client.create_namespaced_deployment(namespace="default", body=deployment_config)
-        logger.info("deployment %s created", str(config_id))
-    except client.exceptions.ApiException as e:
-        logger.error("deployment create failed")
-        print(str(e))
+        logger.info("message received")
+        resource_details = json.loads(body)
+        config_id = str(uuid.uuid4())
+        cu_config = helpers.make_cu_configmap(resource_details["core_ip"],
+                                                resource_details["core_port"],
+                                                config_id)
+        kubernetes_client.create_namespaced_config_map(namespace="default", body=cu_config)
+        deployment_config = helpers.make_deployment_config(config_id)
+        try:
+            apps_client.create_namespaced_deployment(namespace="default", body=deployment_config)
+            logger.info("deployment %s created", str(config_id))
+        except client.exceptions.ApiException as e:
+            logger.error("deployment create failed")
+            print(str(e))
+    except Exception as e:
+        logger.error("error in work_callback %s", str(e))
 
 channel.basic_consume(queue="work-queue",
                         on_message_callback=work_callback,
