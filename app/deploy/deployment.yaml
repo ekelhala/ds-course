@@ -22,7 +22,7 @@ spec:
           image: ekelhala/srsran-api-server
           ports:
             - containerPort: 80
-        - name: mongo-database
+        - name: mongo
           image: mongo
 ---
 apiVersion: v1
