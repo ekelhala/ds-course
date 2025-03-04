@@ -20,7 +20,7 @@ config.load_incluster_config()
 kubernetes_client = client.CoreV1Api()
 apps_client = client.AppsV1Api()
 
-connection = pika.BlockingConnection()
+connection = pika.BlockingConnection(parameters=connection_params)
 channel = connection.channel()
 channel.queue_declare("work-queue")
 
