@@ -41,13 +41,28 @@ def work_callback(ch, method, properties, body):
         try:
             apps_client.create_namespaced_deployment(namespace="default", body=deployment_config)
             logger.info("deployment %s created", str(config_id))
+            
+            response_body = json.dumps({
+                "id": config_id,
+                "message": "OK"
+            })
+            
+            channel.basic_publish(
+                exchange="",
+                routing_key=properties.reply_to,
+                properties=pika.BasicProperties(
+                    correlation_id=properties.correlation_id
+                ),
+                body=response_body.encode("utf-8")
+            )
+            channel.basic_ack(delivery_tag=method.delivery_tag)
         except client.exceptions.ApiException as e:
             logger.error("deployment create failed: %s", str(e))
     except Exception as e:
         logger.error("error in work_callback %s", str(e))
 
+channel.basic_qos(prefetch_count=1)
 channel.basic_consume(queue="work-queue",
-                        on_message_callback=work_callback,
-                        auto_ack=True)
+                        on_message_callback=work_callback)
 logger.info("worker started")
 channel.start_consuming()

@@ -30,3 +30,4 @@ class ResourceCreationResponse(BaseModel):
     resource: Resource
     status: CreationStatus # indicates the result of the request
     message: str = "" # message that provides more information
+    resource_id: str # unique id for the resource

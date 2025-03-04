@@ -18,7 +18,7 @@ def request_resources(req: ResourceRequest):
     """
     try:
         amqp_client.connect()
-        amqp_client.send(json.dumps({
+        worker_response = amqp_client.send(json.dumps({
             "core_ip": req.core_ip,
             "core_port": req.core_port,
             "num_rus": req.num_rus
@@ -30,7 +30,8 @@ def request_resources(req: ResourceRequest):
                 "num_rus": 1
             },
             "status": CreationStatus.OK,
-            "message": "test"
+            "message": worker_response["message"],
+            "resource_id": worker_response["id"]
         }
     except KeyError as e:
         raise HTTPException(400, "Missing fields") from e
