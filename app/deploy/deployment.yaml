@@ -16,9 +16,9 @@ spec:
       containers:
         - name: rabbitmq-broker
           image: rabbitmq
-        - name: srsran-worker
+        - name: worker
           image: ekelhala/srsran-worker
-        - name: srsran-api-server
+        - name: api-server
           image: ekelhala/srsran-api-server
           ports:
             - containerPort: 80
