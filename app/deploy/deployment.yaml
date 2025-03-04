@@ -46,7 +46,7 @@ metadata:
   namespace: default
   name: deployment-creator-role
 rules:
-  - apiGroups: [""]
+  - apiGroups: ["apps"]
     resources: ["deployments", "configmaps"]
     verbs: ["create"]
 ---

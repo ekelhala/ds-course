@@ -42,8 +42,7 @@ def work_callback(ch, method, properties, body):
             apps_client.create_namespaced_deployment(namespace="default", body=deployment_config)
             logger.info("deployment %s created", str(config_id))
         except client.exceptions.ApiException as e:
-            logger.error("deployment create failed")
-            print(str(e))
+            logger.error("deployment create failed: %s", str(e))
     except Exception as e:
         logger.error("error in work_callback %s", str(e))
 
