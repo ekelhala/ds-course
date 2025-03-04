@@ -33,23 +33,23 @@ A well-defined format could be used for specifying the properties and amount of 
     "resources": [
         {
             "type": "ru",
-            "name": "ru.1",
-            "connections": ["du.1"]
+            "name": "ru_1",
+            "connections": ["du_1"]
         },
         {
             "type": "ru",
-            "name": "ru.2",
-            "connections": ["du.1"]
+            "name": "ru_2",
+            "connections": ["du_1"]
         },
         {
             "type": "du",
-            "name": "du.1",
-            "connections": ["ru.1", "ru.2", "cu.1"]
+            "name": "du_1",
+            "connections": ["ru_1", "ru_2", "cu_1"]
         },
         {
             "type": "cu",
-            "name": "cu.1",
-            "connections": ["du.1"]
+            "name": "cu_1",
+            "connections": ["du_1"]
         }
     ]
 }
