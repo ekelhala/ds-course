@@ -35,7 +35,7 @@ class RANResourceItem(Resource):
         worker_response = amqp_client.send(request_body)
         if worker_response["status"] == "ok":
             ran_resource.delete()
-            return "Resource deleted"
+            return jsonify({"message": "Resources deleted"})
         raise InternalServerError(
                                 "An error occured when deleting the RAN resource",
                                 worker_response["data"]["message"])
