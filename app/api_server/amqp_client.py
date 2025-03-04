@@ -45,7 +45,7 @@ class AMQPClient():
                                         reply_to=self._reply_queue,
                                         correlation_id=self._correlation_id
                                     ),
-                                    body=message)
+                                    body=json.dumps(message).encode("utf-8"))
         while self._response is None:
             self._connection.process_data_events()
         response_decoded = self._response.decode("utf-8")

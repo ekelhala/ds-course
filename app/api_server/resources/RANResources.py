@@ -48,14 +48,14 @@ class RANResourceCollection(Resource):
         except ValidationError as e:
             raise BadRequest(str(e.message)) from e
         amqp_client.connect()
-        worker_response = amqp_client.send(json.dumps({
+        worker_response = amqp_client.send({
             "command": "create",
             "data": {
                 "core_ip": request.json["core_ip"],
                 "core_port": request.json["core_port"],
                 "num_rus": request.json["num_rus"]
             }
-        }))
+        })
         amqp_client.close()
         if worker_response["status"] == "ok":
             ran_resource = RANResource(
@@ -66,8 +66,9 @@ class RANResourceCollection(Resource):
             )
             ran_resource.save()
             return Response(
-                ran_resource.to_json(),
+                json.dumps(ran_resource.to_json()),
                 201,
                 mimetype="application/json"
             )
-        raise InternalServerError("Could not create RAN resource")
+        raise InternalServerError("Could not create RAN resource",
+                                    worker_response["data"]["message"])
