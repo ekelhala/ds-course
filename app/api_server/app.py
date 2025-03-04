@@ -1,13 +1,17 @@
+import os
 from flask import Flask, Blueprint
 from flask_restful import Api
+from mongoengine import connect
+from dotenv import load_dotenv
+load_dotenv()
 
-from api_server.resources.RANResources import RANResourceCollection
+from api_server.api import api_bp
+from api_server.utils import RANResourceConverter
 
 app = Flask(__name__)
 
-api_bp = Blueprint("api", __name__, url_prefix="/api")
+connect(host=os.getenv("MONGODB_URI"), name="db")
+
+app.url_map.converters["resource"] = RANResourceConverter
+
 app.register_blueprint(api_bp)
-
-api = Api(app)
-
-api.add_resource(RANResourceCollection, "/ran_resources/")

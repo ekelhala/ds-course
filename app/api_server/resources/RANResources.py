@@ -1,7 +1,8 @@
 import json
 from flask import request, Response
 from flask_restful import Resource
-from werkzeug.exceptions import UnsupportedMediaType, InternalServerError
+from werkzeug.exceptions import UnsupportedMediaType, InternalServerError, BadRequest
+from jsonschema import validate, ValidationError
 
 from api_server.amqp_client import AMQPClient
 from api_server.models import RANResource
@@ -42,6 +43,10 @@ class RANResourceCollection(Resource):
     def post(self):
         if not request.content_type == "application/json":
             raise UnsupportedMediaType
+        try:
+            validate(request.json, RANResourceItem.json_schema())
+        except ValidationError as e:
+            raise BadRequest(str(e.message)) from e
         amqp_client.connect()
         worker_response = amqp_client.send(json.dumps({
             "command": "create",
