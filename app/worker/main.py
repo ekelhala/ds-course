@@ -29,6 +29,7 @@ channel = connection.channel()
 channel.queue_declare("work-queue")
 
 def work_callback(ch, method, properties, body):
+    response_body = None
     try:
         logger.info("message received")
         resource_details = json.loads(body)
@@ -44,39 +45,48 @@ def work_callback(ch, method, properties, body):
                 apps_client.create_namespaced_deployment(namespace="default", body=deployment_config)
                 logger.info("deployment %s created", str(config_id))
                 
-                response_body = json.dumps({
-                    "id": config_id,
-                    "message": "resources created"
-                })
-                
-                channel.basic_publish(
-                    exchange="",
-                    routing_key=properties.reply_to,
-                    properties=pika.BasicProperties(
-                        correlation_id=properties.correlation_id
-                    ),
-                    body=response_body.encode("utf-8")
-                )
-                channel.basic_ack(delivery_tag=method.delivery_tag)
+                response_body = {
+                    "status": "ok",
+                    "data": {
+                        "id": config_id,
+                        "message": "resources created"
+                    }
+                }
             except client.exceptions.ApiException as e:
                 logger.error("deployment create failed: %s", str(e))
+                response_body = {
+                    "status": "error",
+                    "data": {
+                        "message": str(e)
+                    }
+                }
         else:
             deployment_id = resource_details["data"]["resource_id"]
             apps_client.delete_namespaced_deployment(f"srsran-{deployment_id}", namespace="default")
-            response_body = json.dumps({
-                "message": "resource deleted"
-            })
-            channel.basic_publish(
-                exchange="",
-                    routing_key=properties.reply_to,
-                    properties=pika.BasicProperties(
-                        correlation_id=properties.correlation_id
-                    ),
-                    body=response_body.encode("utf-8")
-            )
-            channel.basic_ack(delivery_tag=method.delivery_tag)
+            response_body = {
+                "status": "ok",
+                "data": {
+                    "message": "resource deleted"
+                }
+            }
     except Exception as e:
         logger.error("error in work_callback %s", str(e))
+        response_body = {
+            "status": "error",
+            "data": {
+                "message": str(e)
+            }
+        }
+    finally:
+        channel.basic_publish(
+            exchange="",
+            routing_key=properties.reply_to,
+            properties=pika.BasicProperties(
+                correlation_id=properties.correlation_id
+            ),
+            body=json.dumps(response_body).encode("utf-8")
+        )
+        channel.basic_ack(delivery_tag=method.delivery_tag)
 
 channel.basic_qos(prefetch_count=1)
 channel.basic_consume(queue="work-queue",

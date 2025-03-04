@@ -31,14 +31,15 @@ def request_resources(req: ResourceRequest):
             }
         }))
         amqp_client.close()
+
         return {
             "resource": {
                 "bind_address":"",
                 "num_rus": 1
             },
-            "status": ResponseStatus.OK,
-            "message": worker_response["message"],
-            "resource_id": worker_response["id"]
+            "status": worker_response["status"],
+            "message": worker_response["data"]["message"],
+            "resource_id": worker_response["data"].get("id")
         }
     except KeyError as e:
         logging.error("error in POST: %s",str(e))
@@ -65,6 +66,6 @@ def delete_resource(resource_id: str):
             }
         }))
         amqp_client.close()
-        return {"status": ResponseStatus.OK, "message": worker_response["message"]}
+        return {"status": worker_response["status"], "message": worker_response["data"]["message"]}
     except:
         raise HTTPException(500, "Error deleting resource")

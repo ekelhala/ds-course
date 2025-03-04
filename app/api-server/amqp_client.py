@@ -38,6 +38,7 @@ class AMQPClient():
 
     def send(self, message):
         self._correlation_id = str(uuid.uuid4())
+        self._response = None
         self._channel.basic_publish(exchange="",
                                     routing_key=self._queue_name,
                                     properties=pika.BasicProperties(
