@@ -33,7 +33,7 @@ spec:
   ports:
     - protocol: TCP
       port: 80
-  type: NodePort
+  type: LoadBalancer
 ---
 apiVersion: v1
 kind: ServiceAccount
