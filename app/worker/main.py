@@ -18,6 +18,7 @@ connection_params = pika.ConnectionParameters(
 config.load_incluster_config()
 
 kubernetes_client = client.CoreV1Api()
+apps_client = client.AppsV1Api()
 
 connection = pika.BlockingConnection()
 channel = connection.channel()
@@ -30,8 +31,13 @@ def work_callback(ch, method, properties, body):
                                          resource_details.core_port,
                                          config_id)
     kubernetes_client.create_namespaced_config_map(namespace="default", body=cu_config)
-    if helpers.create_deployment(kubernetes_client, config_id):
-        print("New deployment created")
+    deployment_config = helpers.make_deployment_config(config_id)
+    try:
+        apps_client.create_namespaced_deployment(namespace="default", body=deployment_config)
+        print("deployment created")
+    except client.exceptions.ApiException as e:
+        print("deployment create failed")
+        print(str(e))
 
 channel.basic_consume(queue="work-queue",
                         on_message_callback=work_callback,

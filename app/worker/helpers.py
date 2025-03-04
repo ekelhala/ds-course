@@ -45,7 +45,7 @@ def make_cu_configmap(core_ip: str, core_port: int, config_id: str):
         data={"cu.yaml": config_data}
     )
 
-def create_deployment(kubernetes_client, unique_id):
+def make_deployment_config(unique_id):
   try: 
     deployment = client.V1Deployment(
       api_version="apps/v1",
@@ -108,6 +108,7 @@ def create_deployment(kubernetes_client, unique_id):
         )
       )
     )
-    return True
-  except client.exceptions.ApiException:
+    return deployment
+  except client.exceptions.ApiException as e:
+    print(str(e))
     return False
