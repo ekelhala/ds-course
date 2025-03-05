@@ -104,6 +104,6 @@ channel.basic_qos(prefetch_count=1)
 channel.basic_consume(queue="work-queue",
                         on_message_callback=work_callback)
 logger.info("worker started")
-start_http_server(8080)
+start_http_server(9000)
 logger.info("metrics server started")
 channel.start_consuming()
