@@ -55,8 +55,6 @@ metadata:
 spec:
   selector:
     app: srsran-service-stack
-  type: ExternalName
-  externalName: worker-service.monitoring.svc.cluster.local
   ports:
     - protocol: TCP
       port: 9000

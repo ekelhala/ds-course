@@ -47,15 +47,11 @@ data:
                 - default
         relabel_configs:
           - source_labels: [__meta_kubernetes_service_name]
-            regex: worker  # The name of the service exposing the metrics
+            regex: worker-service
             action: keep
           - source_labels: [__meta_kubernetes_pod_container_port_number]
-            regex: "9000"  # Modify this to match the port your app exposes metrics on
+            regex: "9000"
             action: keep
-
-      - job_name: 'api-server'
-        static_configs:
-          - targets: ['10.105.0.21:80']
 ---
 apiVersion: v1
 kind: ConfigMap
