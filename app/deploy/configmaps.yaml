@@ -54,7 +54,7 @@ metadata:
   name: grafana-config
   namespace: monitoring
 data:
-  grafana.ini |
+  grafana.ini: |
     [server]
     root_url = %(protocol)s://%(domain)s:%(http_port)s/monitoring/
     serve_from_sub_path = true
