@@ -59,7 +59,6 @@ spec:
     - protocol: TCP
       port: 9000
       targetPort: 9000
-  clusterIP: 10.105.0.20
 ---
 apiVersion: v1
 kind: Service
