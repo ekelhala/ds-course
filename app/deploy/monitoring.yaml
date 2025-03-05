@@ -46,6 +46,13 @@ spec:
           image: grafana/grafana
           ports:
             - containerPort: 3000
+          volumeMounts:
+            - name: grafana-config-volume
+              mountPath: /etc/grafana
+      volumes:
+        - name: grafana-config-volume
+          configMap:
+            name: grafana-config
 ---
 apiVersion: v1
 kind: Service
