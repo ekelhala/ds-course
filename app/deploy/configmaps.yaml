@@ -40,8 +40,18 @@ data:
 
     scrape_configs:
       - job_name: 'worker'
-        static_configs:
-          - targets: ['worker-service.default.svc.cluster.local:9000']
+        kubernetes_sd_configs:
+          - role: endpoints
+            namespaces:
+              names:
+                - default
+        relabel_configs:
+          - source_labels: [__meta_kubernetes_service_name]
+            regex: worker  # The name of the service exposing the metrics
+            action: keep
+          - source_labels: [__meta_kubernetes_pod_container_port_number]
+            regex: "9000"  # Modify this to match the port your app exposes metrics on
+            action: keep
 
       - job_name: 'api-server'
         static_configs:
