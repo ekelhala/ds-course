@@ -52,6 +52,19 @@ data:
           - source_labels: [__meta_kubernetes_pod_container_port_number]
             regex: "9000"
             action: keep
+      - job_name: 'api-server'
+        kubernetes_sd_configs:
+          - role: endpoints
+            namespaces:
+              names:
+                - default
+        relabel_configs:
+          - source_labels: [__meta_kubernetes_service_name]
+            regex: api-server-service
+            action: keep
+          - source_labels: [__meta_kubernetes_pod_container_port_number]
+            regex: "80"
+            action: keep
 ---
 apiVersion: v1
 kind: ConfigMap
