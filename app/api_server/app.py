@@ -1,13 +1,14 @@
 import json
 import os
-from flask import Flask, Blueprint
-from flask_restful import Api
+from flask import Flask
 from werkzeug.exceptions import HTTPException
 from mongoengine import connect
+from prometheus_flask_exporter import PrometheusMetrics
 from dotenv import load_dotenv
 load_dotenv()
 
 app = Flask(__name__)
+PrometheusMetrics(app)
 
 connect(host=os.getenv("MONGODB_URI"), name="db")
 
