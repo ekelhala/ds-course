@@ -29,9 +29,9 @@ connection = pika.BlockingConnection(parameters=connection_params)
 channel = connection.channel()
 channel.queue_declare("work-queue")
 
-work_counter = Counter("number_of_commands_processed",
-                        "Number of commands processed by the worker")
-error_counter = Counter("number_of_command_errors",
+work_counter = Counter("number_of_commands_success",
+                        "Number of commands successfully processed")
+error_counter = Counter("number_of_commands_errors",
                         "Number of errors encountered when processing commands.")
 processing_time = Summary("command_processing_time",
                           "Time spent processing a command.")
@@ -62,6 +62,7 @@ def work_callback(ch, method, properties, body):
                             "message": "resources created"
                         }
                     }
+                    work_counter.inc()
                 except client.exceptions.ApiException as e:
                     logger.error("deployment create failed: %s", str(e))
                     response_body = {
@@ -79,6 +80,7 @@ def work_callback(ch, method, properties, body):
                         "message": "resource deleted"
                     }
                 }
+                work_counter.inc()
         except Exception as e:
             logger.error("error in work_callback %s", str(e))
             response_body = {
@@ -97,7 +99,6 @@ def work_callback(ch, method, properties, body):
                 body=json.dumps(response_body).encode("utf-8")
             )
             channel.basic_ack(delivery_tag=method.delivery_tag)
-            work_counter.inc()
 
 channel.basic_qos(prefetch_count=1)
 channel.basic_consume(queue="work-queue",
