@@ -88,10 +88,15 @@ spec:
           volumeMounts:
             - name: grafana-config-volume
               mountPath: /etc/grafana
+            - name: grafana-datasource-volume
+              mountPath: /etc/grafana/provisioning/datasources
       volumes:
         - name: grafana-config-volume
           configMap:
             name: grafana-config
+        - name: grafana-datasource-volume
+          configMap:
+            name: grafana-datasource
 ---
 apiVersion: v1
 kind: Service
@@ -120,3 +125,4 @@ spec:
     - protocol: TCP
       port: 9090
       targetPort: 9090
+  clusterIp: 10.106.53.165
