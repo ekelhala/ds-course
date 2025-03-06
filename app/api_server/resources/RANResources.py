@@ -79,4 +79,7 @@ class RANResourceCollection(Resource):
     def get(self):
         #pylint: disable=no-member
         db_resources = RANResource.objects()
-        return jsonify((ran_resource.to_json() for ran_resource in db_resources))
+        response_body = []
+        for ran_resource in db_resources:
+            response_body.append(ran_resource.to_json())
+        return jsonify(response_body)
