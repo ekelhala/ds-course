@@ -90,6 +90,8 @@ spec:
               mountPath: /etc/grafana
             - name: grafana-datasource-volume
               mountPath: /etc/grafana/provisioning/datasources
+            - name: grafana-dashboard-volume
+              mountPath: /var/lib/grafana/dashboards
       volumes:
         - name: grafana-config-volume
           configMap:
@@ -97,6 +99,9 @@ spec:
         - name: grafana-datasource-volume
           configMap:
             name: grafana-datasource
+        - name: grafana-dashboard-volume
+          configMap:
+            name: grafana-dashboard
 ---
 apiVersion: v1
 kind: Service
