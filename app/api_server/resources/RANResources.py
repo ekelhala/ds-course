@@ -75,3 +75,8 @@ class RANResourceCollection(Resource):
             )
         raise InternalServerError("Could not create RAN resource",
                                     worker_response["data"]["message"])
+
+    def get(self):
+        #pylint: disable=no-member
+        db_resources = RANResource.objects()
+        return jsonify((ran_resource.to_json() for ran_resource in db_resources))
