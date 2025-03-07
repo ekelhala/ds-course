@@ -1,10 +1,12 @@
 # Service architecture for RANaaS implementation using srsRAN and Kubernetes
 
-The proposed architecture consists of an API microservice that receives resource requests from core network operators, and forwards them to a worker microservice that provisions the required resources (virtualized CU and DU), and connects the DU to a number of RUs.
+The architecture consists of an API microservice that receives resource requests from core network operators, and forwards them to a worker microservice that provisions the required resources (virtualized CU and DU), and connects the DU to a number of RUs.
 
 After finishing its work, the worker service reports back to the API service, which sends a reponse containing connection details in order to connect the core network to the provisioned CU.
 
 The CUs and DUs are fully virtualized and run in Kubernetes pods. The RUs are also virtual (implemented with srsRAN ru_emulator) and run in Kubernetes.
+
+The configuration and the unique ID of each RAN deployment is stored to a MongoDB database, so that users can interact with it easily. The information in the database is also exposed through the API service.
 
 The full architecture is depicted in diagram below.
 
