@@ -1,3 +1,9 @@
+# 12/3/2025
+
+Designed architecture for orchestration and status services, which help allocate RAN resources. The idea here is that the orchestration service uses an LLM, which gets fed the current system state, and it gives the resource definition which does not exceed any resource limits, and takes into account the requester's needs.
+
+Thinking of implementing status service in NodeJS.
+
 # 6/3/2025
 
 API and worker service can interact. API sends requests to create or delete deployments to the worker service, and worker service performs these actions and reports the result. MongoDB is used to store the configurations of the RAN deployments.
