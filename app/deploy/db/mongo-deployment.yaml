@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ran-service-stack-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ran-service-stack-db
+  template:
+    metadata:
+      labels:
+        app: ran-service-stack-db
+    spec:
+      containers:
+        - name: mongo
+          image: mongo
+          volumeMounts:
+            - mountPath: "/data/db"
+              name: mongodb-storage
+          ports:
+            - containerPort: 27017
+      volumes:
+        - name: mongodb-storage
+          persistentVolumeClaim:
+            claimName: db-volume-claim
+---
+# expose mongo port with static ClusterIP
+apiVersion: v1
+kind: Service
+metadata:
+  name: ran-service-stack-db-service
+spec:
+  selector:
+    app: ran-service-stack-db
+  ports:
+    - protocol: TCP
+      port: 27017
+      targetPort: 27017
+  clusterIP: 10.106.50.165
