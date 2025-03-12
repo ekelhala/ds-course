@@ -4,6 +4,8 @@ Designed architecture for orchestration and status services, which help allocate
 
 Thinking of implementing status service in NodeJS.
 
+Updated architecture document to correspond to current status.
+
 # 6/3/2025
 
 API and worker service can interact. API sends requests to create or delete deployments to the worker service, and worker service performs these actions and reports the result. MongoDB is used to store the configurations of the RAN deployments.
