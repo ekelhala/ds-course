@@ -3,14 +3,20 @@ import mongoose from "mongoose"
 import k8sInteractor from "./k8sInteractor"
 
 import status from "./routes/status"
+import e from "express"
 
 const PORT = process.env.PORT || 8000
 const app = Express()
 
 mongoose.connect(process.env.MONGODB_URI||"mongodb://127.0.0.1:27017")
-    .catch((e) => console.error("Failed connecting to MongoDB: ", e))
+    .catch((e) => console.log("Failed connecting to MongoDB: ", e))
     .then(() => console.log("Connected to MongoDB"))
-k8sInteractor.init()
+try {
+    k8sInteractor.init()
+}
+catch (error) {
+    console.log("Error initializing Kubernetes client:", e)
+}
 
 app.use(Express.json())
 app.use("/status", status)
