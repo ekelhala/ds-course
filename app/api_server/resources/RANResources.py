@@ -1,7 +1,8 @@
 import json
+import requests
 from flask import request, Response, jsonify
 from flask_restful import Resource
-from werkzeug.exceptions import UnsupportedMediaType, InternalServerError, BadRequest
+from werkzeug.exceptions import UnsupportedMediaType, InternalServerError, BadRequest, NotFound
 from jsonschema import validate, ValidationError
 
 from api_server.amqp_client import AMQPClient
@@ -24,7 +25,13 @@ class RANResourceItem(Resource):
         }
 
     def get(self, ran_resource):
-        return jsonify(ran_resource.to_json())
+        # making the request to status service here
+        response = requests.get(f"http://localhost:8000/status/{ran_resource.unique_id}", timeout=30)
+        if response.status_code == 200:
+            return jsonify(response.content.decode("utf-8"))
+        if response.status_code == 404:
+            raise NotFound("Requested resource does not exist")
+        raise InternalServerError("Error communicating with status service")
 
     def delete(self, ran_resource):
         request_body = {
