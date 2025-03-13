@@ -26,7 +26,7 @@ class RANResourceItem(Resource):
 
     def get(self, ran_resource):
         # making the request to status service here
-        response = requests.get(f"http://localhost:8000/status/{ran_resource.unique_id}", timeout=30)
+        response = requests.get(f"http://localhost:8000/status/{ran_resource.resource_id}", timeout=30)
         if response.status_code == 200:
             return jsonify(response.content.decode("utf-8"))
         if response.status_code == 404:
