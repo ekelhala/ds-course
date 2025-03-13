@@ -1,10 +1,13 @@
 aniso8601==10.0.0
 attrs==25.1.0
 blinker==1.9.0
+certifi==2025.1.31
+charset-normalizer==3.4.1
 click==8.1.8
 dnspython==2.7.0
 Flask==3.1.0
 Flask-RESTful==0.3.10
+idna==3.10
 itsdangerous==2.2.0
 Jinja2==3.1.5
 jsonschema==4.23.0
@@ -18,7 +21,9 @@ pymongo==4.11.2
 python-dotenv==1.0.1
 pytz==2025.1
 referencing==0.36.2
+requests==2.32.3
 rpds-py==0.23.1
 six==1.17.0
 typing_extensions==4.12.2
+urllib3==2.3.0
 Werkzeug==3.1.3
