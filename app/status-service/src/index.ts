@@ -7,7 +7,9 @@ import status from "./routes/status"
 const PORT = process.env.PORT || 8000
 const app = Express()
 
-mongoose.connect(process.env.MONGODB_URI||"mongodb://127.0.0.1:27017")
+mongoose.connect(process.env.MONGODB_URI||"mongodb://127.0.0.1:27017", {
+    dbName: "db"
+})
     .catch((e) => console.log("Failed connecting to MongoDB: ", e))
     .then(() => console.log("Connected to MongoDB"))
 try {

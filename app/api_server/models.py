@@ -7,6 +7,10 @@ class RANResource(Document):
     core_port = IntField()
     num_rus = IntField()
 
+    meta = {
+        "collection": "ranresources"
+    }
+
     def to_json(self):
         return {
             "resource_id": self.resource_id,

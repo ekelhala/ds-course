@@ -10,8 +10,10 @@ const router = Router()
  * This view aggregates the data from Kubernetes API and MongoDB
  */
 router.get("/:id", async (req, res) => {
+    console.log(req.params.id)
     const resourceInDB = await RANResource.findOne({resource_id: req.params.id})
     // processing only if resource in db
+    console.log("found resource:", resourceInDB)
     if(resourceInDB) {
         const response = {
             configuration: resourceInDB.toJSON(),
