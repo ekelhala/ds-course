@@ -3,7 +3,6 @@ import mongoose from "mongoose"
 import k8sInteractor from "./k8sInteractor"
 
 import status from "./routes/status"
-import e from "express"
 
 const PORT = process.env.PORT || 8000
 const app = Express()
@@ -15,7 +14,7 @@ try {
     k8sInteractor.init()
 }
 catch (error) {
-    console.log("Error initializing Kubernetes client:", e)
+    console.log("Error initializing Kubernetes client:", error)
 }
 
 app.use(Express.json())
