@@ -28,7 +28,7 @@ class RANResourceItem(Resource):
         # making the request to status service here
         response = requests.get(f"http://localhost:8000/status/{ran_resource.resource_id}", timeout=30)
         if response.status_code == 200:
-            return jsonify(response.content.decode("utf-8"))
+            return response.content.decode("utf-8"), 200
         if response.status_code == 404:
             raise NotFound("Requested resource does not exist")
         raise InternalServerError("Error communicating with status service")
