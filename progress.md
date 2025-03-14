@@ -1,8 +1,8 @@
-# 12/3/2025
+# 14/3/2025
 
 Designed architecture for orchestration and status services, which help allocate RAN resources. The idea here is that the orchestration service uses an LLM, which gets fed the current system state, and it gives the resource definition which does not exceed any resource limits, and takes into account the requester's needs.
 
-Thinking of implementing status service in NodeJS.
+Status service is now implemented with NodeJS. The implementation of orchestrator service is underway. In orchestrator, .NET Core will be used to create an API with C#, which allows interfacing with Semantic Kernel, and also querying the resource status from the status service.
 
 Updated architecture document to correspond to current status.
 
